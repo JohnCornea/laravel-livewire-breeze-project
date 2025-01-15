@@ -7,14 +7,22 @@
             <label class="block text-gray-700 text-sm font-bold mb-2" for="title">
               Title
             </label>
-            <input wire:model="title" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="title" type="text">
+            <input wire:model="form.title" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="title" type="text">
+            @error('form.title')
+              <div class="text-red-500">{{$message}}</div>
+            @enderror
+
           </div>
           {{-- <div class="mb-0"> --}}
             <label class="block text-gray-700 text-sm font-bold mb-2" for="description">
                 Description
                 {{-- {{$name}} --}}
               </label>
-            <textarea wire:model="description" class="rounded min-w-full" name="" id="" cols="30" rows="5"></textarea>
+            <textarea wire:model="form.body" class="rounded min-w-full" name="" id="" cols="30" rows="5"></textarea>
+            @error('form.body')
+              <div class="text-red-500">{{$message}}</div>
+            @enderror
+
           <div class="flex justify-end">
             <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flow" type="submit">
               Create
@@ -31,27 +39,19 @@
                 <th scope="col" class="px-6 py-3 text-start text-sm uppercase">Id</th>
                 <th scope="col" class="px-6 py-3 text-start text-sm uppercase">User</th>
                 <th scope="col" class="px-6 py-3 text-start text-sm uppercase">Title</th>
-                <th scope="col" class="px-6 py-3 text-start text-sm uppercase">Create At</th>
+                <th scope="col" class="px-6 py-3 text-start text-sm uppercase">Date</th>
                 <th scope="col" class="px-6 py-3 text-start text-sm uppercase">Delete</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($posts as $post)
                 
-            <tr class="hover:bg-gray-200 dark:bg-gray-50">
-                <td class="px-6 py-3 text-start text-sm">{{$post->id}}</td>
-                <td class="px-6 py-3 text-start text-sm">{{$post->user->name}}</td>
-                <td class="px-6 py-3 text-start text-sm">{{$post->title}}</td>
-                <td class="px-6 py-3 text-start text-sm">{{$post->created_at->diffForHumans()}}</td>
-                <td class="px-6 py-3 text-start text-sm hover:bg-white">
-                    <button wire:click="destroy({{$post->id}})" class="bg-red-500 px-4 py-2 font-sans text-white rounded hover:bg-red-800">Delete</button>
-                </td>
-            </tr>
+                <livewire:post-item :post="$post" wire:key="{{$post->id}}" @deleting="$refresh" />
             @endforeach
         </tbody>
     </table>
     <div class="p-4">
-        {{$posts->links()}}
+        {{$posts->links(data: ['scrollTo' => false])}}
     </div>
     </div>
 </div>

@@ -15,7 +15,7 @@
                     </div> --}}
                     {{-- <livewire:counter/> --}}
 
-                    <livewire:posts></livewire:posts>
+                    <livewire:post-index></livewire:post-index>
                 </div>
             </div>
         </div>
